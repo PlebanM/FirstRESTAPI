@@ -1,21 +1,22 @@
 package com.api.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "age_categories")
 public class AgeCategories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Integer age_from;
 
+    @Column(nullable = false)
     private Integer age_to;
 
     public AgeCategories() {
