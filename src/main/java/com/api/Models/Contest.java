@@ -29,7 +29,7 @@ public class Contest {
     private String site;
 
     @OneToMany(mappedBy = "contest")
-    List<Time> time;
+    private List<Time> time;
 
     public Contest() {
     }
@@ -40,15 +40,6 @@ public class Contest {
         this.city = city;
         this.maxPlayers = maxPlayers;
         this.site = site;
-    }
-
-    public Contest(Date date, int prizePool, String city, int maxPlayers, String site, List<Time> time) {
-        this.date = date;
-        this.prizePool = prizePool;
-        this.city = city;
-        this.maxPlayers = maxPlayers;
-        this.site = site;
-        this.time = time;
     }
 
     public long getId() {
@@ -97,5 +88,13 @@ public class Contest {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public List<Time> getTime() {
+        return time;
+    }
+
+    public void setTime(List<Time> time) {
+        this.time = time;
     }
 }

@@ -27,18 +27,17 @@ public class Player {
     private int age;
 
     @OneToMany(mappedBy = "player")
-    List<Time> times;
+    private List<Time> times;
 
     public Player() {
     }
 
-    public Player(String country, String club, String city, Gender gender, int age, List<Time> times) {
+    public Player(String country, String club, String city, Gender gender, int age) {
         this.country = country;
         this.club = club;
         this.city = city;
         this.gender = gender;
         this.age = age;
-        this.times = times;
     }
 
     public long getId() {

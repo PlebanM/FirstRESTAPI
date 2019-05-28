@@ -6,7 +6,11 @@
 
     <persistence-unit name="sts-timing" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.api.Models.AgeCategories</class>
+        <class>com.api.Models.AgeCategory</class>
+        <class>com.api.Models.Contest</class>
+        <class>com.api.Models.Gender</class>
+        <class>com.api.Models.Player</class>
+        <class>com.api.Models.Time</class>
 <!--        <class>com.api</class>-->
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>

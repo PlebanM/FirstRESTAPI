@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "age_categories")
-public class AgeCategories {
+public class AgeCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +19,11 @@ public class AgeCategories {
     @Column(nullable = false)
     private Integer age_to;
 
-    public AgeCategories() {
+    public AgeCategory() {
 
     }
 
-    public AgeCategories(String name, Integer age_from, Integer age_to) {
+    public AgeCategory(String name, Integer age_from, Integer age_to) {
         this.name = name;
         this.age_from = age_from;
         this.age_to = age_to;

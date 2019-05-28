@@ -20,9 +20,8 @@ public class Gender {
 
     }
 
-    public Gender(String name, Player player) {
+    public Gender(String name) {
         this.name = name;
-        this.player = player;
     }
 
     public Player getPlayer() {
@@ -31,10 +30,6 @@ public class Gender {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public Gender(String name) {
-        this.name = name;
     }
 
     public long getId() {
