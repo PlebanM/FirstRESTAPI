@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "Player")
+@Table(name = "players")
 @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p")
 public class Player {
 
@@ -26,8 +26,7 @@ public class Player {
     @Column(nullable = false)
     private String city;
 
-    @OneToOne(optional = false)
-    @JoinColumn(referencedColumnName = "id")
+    @ManyToOne(optional = false)
     private Gender gender;
 
     @Column(nullable = false)

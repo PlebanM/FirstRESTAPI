@@ -34,5 +34,29 @@ public class Main {
         em.persist(t1);
         em.persist(category);
         transaction.commit();
+
+
+        Gender g2 = new Gender("woman");
+        Player p2 = new Player("USA", "Run for Fun", "Rzeszów", g2, 48);
+        Contest c2 = new Contest(new Date(), 2000, "Mexico", 100, "www.nowastrona.pl");
+        Time t2 = new Time(p2, c2, 600);
+        AgeCategory category2 = new AgeCategory("O60", 16, 20);
+        EntityTransaction transaction2 = em.getTransaction();
+        transaction2.begin();
+        em.persist(g2);
+        em.persist(p2);
+        em.persist(c2);
+        em.persist(t2);
+        em.persist(category);
+        transaction2.commit();
+
+        EntityTransaction transaction3 = em.getTransaction();
+        transaction3.begin();
+        Contest c3 = new Contest(new Date(), 1000, "Rzym", 20, "www.nowasssstrona.pl");
+        Time t3 = new Time(p2, c3, 123);
+        em.persist(c3);
+        em.persist(t3);
+        transaction3.commit();
+
     }
 }
