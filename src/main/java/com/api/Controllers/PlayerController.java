@@ -41,21 +41,22 @@ public class PlayerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewUser(Player player) {
-        System.out.println(player.getCity());
-        System.out.println(player.getAge());
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        TypedQuery<Gender> query = em.createQuery("SELECT g FROM Gender g WHERE id = 1", Gender.class);
+        TypedQuery<Gender> query = em.createQuery("SELECT g FROM Gender g WHERE g.name = :name", Gender.class);
+        query.setParameter("name", player.getGender().getName());
         Gender g = query.getSingleResult();
         player.setGender(g);
-        em.merge(player);
+        em.persist(player);
         em.getTransaction().commit();
         em.close();
         emf.close();
+        System.out.println(player.getId());
+        String response = "{\"id\":" + player.getId() + "}";
 
-        return Response.ok().entity("ok").build();
+        return Response.ok().entity(response).build();
     }
 
 }
