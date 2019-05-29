@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "age_categories")
+@NamedQuery(name = "AgeCategory.findAll", query = "SELECT a FROM AgeCategory a")
 public class AgeCategory {
 
     @Id
@@ -27,6 +28,14 @@ public class AgeCategory {
         this.name = name;
         this.age_from = age_from;
         this.age_to = age_to;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
