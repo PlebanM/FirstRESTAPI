@@ -1,7 +1,7 @@
 package com.api.Models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "genders")
@@ -14,8 +14,8 @@ public class Gender {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(mappedBy = "gender")
-    private Player player;
+    @OneToMany(mappedBy = "gender")
+    private List<Player> player;
 
     public Gender() {
 
@@ -25,12 +25,11 @@ public class Gender {
         this.name = name;
     }
 
-    @JsonIgnore
-    public Player getPlayer() {
+    public List<Player> getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(List<Player> player) {
         this.player = player;
     }
 

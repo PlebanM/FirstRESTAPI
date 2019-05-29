@@ -1,16 +1,11 @@
 package com.api.Models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "Player")
+@Table(name = "players")
 @NamedQuery(name = "Player.findAll", query = "SELECT p FROM Player p")
 public class Player {
 
@@ -26,7 +21,7 @@ public class Player {
     @Column(nullable = false)
     private String city;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(referencedColumnName = "id")
     private Gender gender;
 
