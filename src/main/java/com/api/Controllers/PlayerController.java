@@ -34,12 +34,6 @@ public class PlayerController {
         em.close();
         emf.close();
 
-        GenericEntity<List<Player>> entity = new GenericEntity<List<Player>>(playersList){};
-
-        GenericEntity<List<Player>> entity = new GenericEntity<List<Player>>(playersList) {
-        };
-
-
         return Response.ok(serialized).build();
     }
 
