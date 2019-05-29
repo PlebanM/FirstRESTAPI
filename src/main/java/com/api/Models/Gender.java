@@ -1,5 +1,4 @@
 package com.api.Models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +14,9 @@ public class Gender {
     @Column(nullable = false, unique = true)
     private String name;
 
+
     @OneToMany(mappedBy = "gender", fetch = FetchType.EAGER)
+
     private List<Player> player;
 
     public Gender() {
@@ -29,6 +30,7 @@ public class Gender {
     public List<Player> getPlayer() {
         return player;
     }
+
 
     @JsonIgnore
     public void setPlayer(List<Player> player) {
