@@ -14,7 +14,9 @@ public class Gender {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "gender")
+
+    @OneToMany(mappedBy = "gender", fetch = FetchType.EAGER)
+
     private List<Player> player;
 
     public Gender() {
@@ -29,6 +31,8 @@ public class Gender {
         return player;
     }
 
+
+    @JsonIgnore
     public void setPlayer(List<Player> player) {
         this.player = player;
     }
