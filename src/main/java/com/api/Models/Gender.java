@@ -1,4 +1,5 @@
 package com.api.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -24,6 +25,7 @@ public class Gender {
         this.name = name;
     }
 
+    @JsonIgnore
     public Player getPlayer() {
         return player;
     }

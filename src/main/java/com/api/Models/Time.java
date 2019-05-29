@@ -1,6 +1,8 @@
 package com.api.Models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,10 +14,12 @@ public class Time{
     private long id;
 
     @ManyToOne(optional = false)
+//    @JsonIgnore
     private Player player;
 
     @ManyToOne(optional = false)
     private Contest contest;
+
 
     private long time;
 
@@ -29,6 +33,7 @@ public class Time{
         this.time = time;
     }
 
+
     public long getId() {
         return id;
     }
@@ -37,6 +42,7 @@ public class Time{
         this.id = id;
     }
 
+    @JsonIgnore
     public Player getPlayer() {
         return player;
     }
@@ -45,6 +51,7 @@ public class Time{
         this.player = player;
     }
 
+    @JsonIgnore
     public Contest getContest() {
         return contest;
     }
