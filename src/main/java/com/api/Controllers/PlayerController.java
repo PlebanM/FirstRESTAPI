@@ -1,10 +1,10 @@
 package com.api.Controllers;
 
+import com.api.Models.BestGenderData;
 import com.api.Models.Gender;
 import com.api.Models.Player;
 import com.api.Models.Time;
-
-import com.api.Serialization.AllFieldsFromTimeSerializer;
+import com.api.Serialization.GenderBestSerializer;
 import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +12,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import javax.persistence.*;
 import javax.ws.rs.*;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Path("/players")
@@ -116,7 +116,34 @@ public class PlayerController {
 
     }
 
+    @GET
+    @Path("/get/best/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBestInGender(BestGenderData bestGenderData) throws JsonProcessingException {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        TypedQuery<Player> query = em.createQuery("SELECT distinct p FROM Player p " +
+                "JOIN p.gender g JOIN p.times t JOIN t.contest c " +
+                "WHERE g.name = :gender AND YEAR(c.date) = :year AND t.time != 0", Player.class)
+                .setParameter("gender", bestGenderData.getGender())
+                .setParameter("year", bestGenderData.getYear())
+                .setMaxResults(bestGenderData.getLimit());
+        List<Player> best = query.getResultList();
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
 
+        best.sort(Comparator.comparingInt(p -> -p.getTimes().size()));
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule sm = new SimpleModule();
+        sm.addSerializer(Player.class, new GenderBestSerializer());
+        mapper.registerModule(sm);
+
+        String serialized = mapper.writeValueAsString(best);
+        return Response.ok().entity(serialized).build();
+    }
 
 
 }
