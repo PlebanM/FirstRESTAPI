@@ -1,5 +1,6 @@
 package com.api.Controllers;
 
+import com.api.Daos.Connector;
 import com.api.Models.*;
 import com.api.Serialization.GenderBestSerializer;
 import com.api.Serialization.TimeSerialization;
@@ -22,8 +23,7 @@ public class PlayerController {
     @Path("/get/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response user() throws IOException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = Connector.getInstance().startTransaction();
         TypedQuery<Player> query = em.createNamedQuery("Player.findAll", Player.class);
         List<Player> playersList = query.getResultList();
 
@@ -32,11 +32,8 @@ public class PlayerController {
         module.addSerializer(Time.class, new TimeSerialization());
         ojm.registerModule(module);
 
-//
-
         String serialized = ojm.writeValueAsString(playersList);
-        em.close();
-        emf.close();
+        Connector.getInstance().endTransaction();
 
         return Response.ok(serialized).build();
     }
@@ -45,8 +42,7 @@ public class PlayerController {
     @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response userId(@PathParam("id") Long id) throws JsonProcessingException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = Connector.getInstance().startTransaction();
         Query query = em.createQuery("from Player where id = :id");
         query.setParameter("id", id);
 
@@ -56,8 +52,9 @@ public class PlayerController {
         module.addSerializer(Time.class, new TimeSerialization(Time.class));
         ojm.registerModule(module);
 
-
         String serialized = ojm.writeValueAsString(query.getResultList().get(0));
+
+        Connector.getInstance().endTransaction();
 
         return Response.ok(serialized).build();
     }
@@ -68,19 +65,15 @@ public class PlayerController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewUser(Player player) {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityManager em = Connector.getInstance().startTransaction();
         TypedQuery<Gender> query = em.createQuery("SELECT g FROM Gender g WHERE g.name = :name", Gender.class);
         query.setParameter("name", player.getGender().getName());
         Gender g = query.getSingleResult();
         player.setGender(g);
         em.persist(player);
-        em.getTransaction().commit();
-        em.close();
-        emf.close();
+        Connector.getInstance().endTransaction();
         System.out.println(player.getId());
-        String response = "{id:" + player.getId() + "}";
+        String response = "{\"id\":" + player.getId() + "}";
 
         return Response.ok().entity(response).build();
     }
@@ -89,10 +82,8 @@ public class PlayerController {
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateUser(Player player, @PathParam("id") Long id){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+    public Response updateUser(Player player, @PathParam("id") Long id) {
+        EntityManager em = Connector.getInstance().startTransaction();
 
         Query query = em.createQuery("update Player set age = :age, city = :city, club = :club, country = :country, " +
                 "first_name = :first_name, last_name = :last_name, gender = :gender" +
@@ -107,7 +98,7 @@ public class PlayerController {
         query.setParameter("id", id);
 
         int result = query.executeUpdate();
-        String response = "{rows_updated:" + result + "}";
+        String response = "{\"rows_updated\":" + result + "}";
         em.getTransaction().commit();
         return Response.ok().entity(response).build();
 
@@ -118,9 +109,7 @@ public class PlayerController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBestInGender(BestGenderData bestGenderData) throws JsonProcessingException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityManager em = Connector.getInstance().startTransaction();
         TypedQuery<Player> query = em.createQuery("SELECT distinct p FROM Player p " +
                 "JOIN p.gender g JOIN p.times t JOIN t.contest c " +
                 "WHERE g.name = :gender AND YEAR(c.date) = :year AND t.time != 0", Player.class)
@@ -162,9 +151,8 @@ public class PlayerController {
 
     private Response getResponse(EntityManagerFactory emf, EntityManager em, TypedQuery<Player> query) throws JsonProcessingException {
         List<Player> best = query.getResultList();
-        em.getTransaction().commit();
-        em.close();
-        emf.close();
+
+        Connector.getInstance().endTransaction();
 
         best.sort(Comparator.comparingInt(p -> -p.getTimes().size()));
         ObjectMapper mapper = new ObjectMapper();
