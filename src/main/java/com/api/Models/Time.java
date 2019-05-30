@@ -1,9 +1,7 @@
 package com.api.Models;
 
 
-import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 

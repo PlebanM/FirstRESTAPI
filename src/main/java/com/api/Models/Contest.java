@@ -1,8 +1,6 @@
 package com.api.Models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +29,7 @@ public class Contest {
     private String site;
 
     @OneToMany(mappedBy = "contest")
+    @OrderBy("time DESC")
     private List<Time> time;
 
     public Contest() {
