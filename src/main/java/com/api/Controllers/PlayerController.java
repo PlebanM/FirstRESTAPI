@@ -116,7 +116,8 @@ public class PlayerController {
                 .setParameter("gender", bestGenderData.getGender())
                 .setParameter("year", bestGenderData.getYear())
                 .setMaxResults(bestGenderData.getLimit());
-        return getResponse(emf, em, query);
+
+        return getResponse(query);
     }
 
 
@@ -145,14 +146,12 @@ public class PlayerController {
                 .setParameter("year", bestAge.getYear())
                 .setMaxResults(bestAge.getLimit());
 
-        return getResponse(emf, em, query);
+        return getResponse(query);
     }
 
 
-    private Response getResponse(EntityManagerFactory emf, EntityManager em, TypedQuery<Player> query) throws JsonProcessingException {
+    private Response getResponse(TypedQuery<Player> query) throws JsonProcessingException {
         List<Player> best = query.getResultList();
-
-        Connector.getInstance().endTransaction();
 
         best.sort(Comparator.comparingInt(p -> -p.getTimes().size()));
         ObjectMapper mapper = new ObjectMapper();
@@ -161,6 +160,9 @@ public class PlayerController {
         mapper.registerModule(sm);
 
         String serialized = mapper.writeValueAsString(best);
+
+        Connector.getInstance().endTransaction();
+
         return Response.ok().entity(serialized).build();
     }
 }
