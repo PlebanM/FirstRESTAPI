@@ -13,6 +13,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String first_name;
+
+    private String last_name;
+
     @Column(nullable = false)
     private String country;
 
@@ -34,12 +38,30 @@ public class Player {
     public Player() {
     }
 
-    public Player(String country, String club, String city, Gender gender, int age) {
+    public Player(String first_name, String last_name, String country, String club, String city, Gender gender, int age) {
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.country = country;
         this.club = club;
         this.city = city;
         this.gender = gender;
         this.age = age;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     public long getId() {

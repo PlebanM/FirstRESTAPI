@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"player_id", "contest_id"})})
+@NamedQuery(name = "Time.findAll", query = "SELECT t FROM Time t")
 public class Time{
 
     @Id

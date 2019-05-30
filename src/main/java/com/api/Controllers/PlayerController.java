@@ -3,6 +3,8 @@ package com.api.Controllers;
 import com.api.Models.Gender;
 import com.api.Models.Player;
 import com.api.Models.Time;
+
+import com.api.Serialization.AllFieldsFromTimeSerializer;
 import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import javax.persistence.*;
 import javax.ws.rs.*;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -32,6 +35,10 @@ public class PlayerController {
         module.addSerializer(Time.class, new TimeSerialization());
         ojm.registerModule(module);
 
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Time.class, new TimeSerialization(Time.class));
+        ojm.registerModule(module);
+
         String serialized = ojm.writeValueAsString(playersList);
         em.close();
         emf.close();
@@ -42,13 +49,19 @@ public class PlayerController {
     @GET
     @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response userId(@PathParam("id") int id) throws JsonProcessingException {
+    public Response userId(@PathParam("id") Long id) throws JsonProcessingException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
         EntityManager em = emf.createEntityManager();
         Query query = em.createQuery("from Player where id = :id");
-        query.setParameter("id", Long.valueOf(id));
+        query.setParameter("id", id);
 
         ObjectMapper ojm = new ObjectMapper();
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Time.class, new TimeSerialization(Time.class));
+        ojm.registerModule(module);
+
+
         String serialized = ojm.writeValueAsString(query.getResultList().get(0));
 
         return Response.ok(serialized).build();
@@ -72,10 +85,39 @@ public class PlayerController {
         em.close();
         emf.close();
         System.out.println(player.getId());
-        String response = "{\"id\":" + player.getId() + "}";
+        String response = "{id:" + player.getId() + "}";
 
         return Response.ok().entity(response).build();
     }
+
+    @PUT
+    @Path("/update/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUser(Player player, @PathParam("id") Long id){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        Query query = em.createQuery("update Player set age = :age, city = :city, club = :club, country = :country, " +
+                "first_name = :first_name, last_name = :last_name, gender = :gender" +
+                " where id = :id");
+        query.setParameter("age", player.getAge());
+        query.setParameter("city", player.getCity());
+        query.setParameter("club", player.getClub());
+        query.setParameter("country", player.getCountry());
+        query.setParameter("first_name", player.getFirst_name());
+        query.setParameter("last_name", player.getLast_name());
+        query.setParameter("gender", player.getGender());
+        query.setParameter("id", id);
+
+        int result = query.executeUpdate();
+        String response = "{rows_updated:" + result + "}";
+        em.getTransaction().commit();
+        return Response.ok().entity(response).build();
+
+    }
+
 
 
 

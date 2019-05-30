@@ -22,7 +22,7 @@ public class Main {
 
     private static void populateDB(EntityManager em){
         Gender g1 = new Gender("male");
-        Player p1 = new Player("Poland", "Wichury z lisiej dziury", "Krakow", g1, 26);
+        Player p1 = new Player("Marcin", "Jakis", "Poland", "Wichury z lisiej dziury", "Krakow", g1, 26);
         Contest c1 = new Contest(new Date(), 4000, "Warsau", 200, "www.localhost.pl");
         Time t1 = new Time(p1, c1, 3600);
         AgeCategory category = new AgeCategory("O20", 16, 20);
@@ -37,7 +37,7 @@ public class Main {
 
 
         Gender g2 = new Gender("woman");
-        Player p2 = new Player("USA", "Run for Fun", "Rzeszów", g2, 48);
+        Player p2 = new Player("Kamil", "Nazwisko", "USA", "Run for Fun", "Rzeszów", g2, 48);
         Contest c2 = new Contest(new Date(), 2000, "Mexico", 100, "www.nowastrona.pl");
         Time t2 = new Time(p2, c2, 600);
         AgeCategory category2 = new AgeCategory("O60", 16, 20);

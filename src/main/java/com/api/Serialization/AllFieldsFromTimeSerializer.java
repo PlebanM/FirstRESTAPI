@@ -7,14 +7,13 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class TimeSerialization extends StdSerializer<Time> {
+public class AllFieldsFromTimeSerializer extends StdSerializer<Time> {
 
-
-    public TimeSerialization() {
+    protected AllFieldsFromTimeSerializer() {
         this(null);
     }
 
-    public TimeSerialization(Class<Time> timeClass) {
+    public AllFieldsFromTimeSerializer(Class<Time> timeClass) {
         super(timeClass);
     }
 
@@ -23,10 +22,10 @@ public class TimeSerialization extends StdSerializer<Time> {
     @Override
     public void serialize(Time time, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
+        jsonGenerator.writeNumberField("idPlayer", time.getPlayer().getId());
         jsonGenerator.writeNumberField("idContest", time.getContest().getId());
         jsonGenerator.writeNumberField("time", time.getTime());
         jsonGenerator.writeEndObject();
+
     }
-
-
 }
