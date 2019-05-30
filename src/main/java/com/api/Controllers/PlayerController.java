@@ -35,9 +35,7 @@ public class PlayerController {
         module.addSerializer(Time.class, new TimeSerialization());
         ojm.registerModule(module);
 
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Time.class, new TimeSerialization(Time.class));
-        ojm.registerModule(module);
+//
 
         String serialized = ojm.writeValueAsString(playersList);
         em.close();

@@ -57,7 +57,7 @@ public class TimeController {
         ObjectMapper ojm = new ObjectMapper();
 
         SimpleModule module = new SimpleModule();
-        module.addSerializer(Time.class, new TimeSerialization(Time.class));
+        module.addSerializer(Time.class, new TimeSerialization());
         ojm.registerModule(module);
 
 

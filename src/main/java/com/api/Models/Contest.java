@@ -29,7 +29,7 @@ public class Contest {
     private String site;
 
     @OneToMany(mappedBy = "contest")
-    @OrderBy("time DESC")
+    @OrderBy("time ASC")
     private List<Time> time;
 
     public Contest() {
