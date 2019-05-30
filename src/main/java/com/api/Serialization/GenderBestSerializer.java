@@ -27,6 +27,7 @@ public class GenderBestSerializer extends StdSerializer<Player> {
         jsonGenerator.writeStringField("country", player.getCountry());
         jsonGenerator.writeStringField("club", player.getClub());
         jsonGenerator.writeStringField("city", player.getCity());
+        jsonGenerator.writeNumberField("age", player.getAge());
         jsonGenerator.writeNumberField("runs_attended", player.getTimes().size());
         jsonGenerator.writeEndObject();
     }
