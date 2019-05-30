@@ -5,7 +5,7 @@ public class TimeObject {
 
     private Integer idPlayer;
     private Integer idContest;
-    private Integer time;
+    private int time;
 
     public TimeObject() {
     }
