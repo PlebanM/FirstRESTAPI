@@ -2,15 +2,14 @@ package com.api.Controllers;
 
 import com.api.Models.Gender;
 import com.api.Models.Player;
+import com.api.Models.Time;
+import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import javax.persistence.*;
-
 import javax.ws.rs.*;
-
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -29,6 +28,9 @@ public class PlayerController {
         List<Player> playersList = query.getResultList();
 
         ObjectMapper ojm = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Time.class, new TimeSerialization());
+        ojm.registerModule(module);
 
         String serialized = ojm.writeValueAsString(playersList);
         em.close();

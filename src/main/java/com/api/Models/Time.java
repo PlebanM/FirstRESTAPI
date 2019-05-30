@@ -1,15 +1,12 @@
 package com.api.Models;
 
 
-import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"player_id", "contest_id"})})
-@JsonSerialize(using = TimeSerialization.class)
 public class Time{
 
     @Id
