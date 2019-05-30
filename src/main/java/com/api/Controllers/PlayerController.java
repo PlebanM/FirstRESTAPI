@@ -1,9 +1,6 @@
 package com.api.Controllers;
 
-import com.api.Models.BestGenderData;
-import com.api.Models.Gender;
-import com.api.Models.Player;
-import com.api.Models.Time;
+import com.api.Models.*;
 import com.api.Serialization.GenderBestSerializer;
 import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -130,6 +127,40 @@ public class PlayerController {
                 .setParameter("gender", bestGenderData.getGender())
                 .setParameter("year", bestGenderData.getYear())
                 .setMaxResults(bestGenderData.getLimit());
+        return getResponse(emf, em, query);
+    }
+
+
+    @GET
+    @Path("/get/best/{sign}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBestAge(BestAge bestAge, @PathParam("sign") String sign) throws JsonProcessingException {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
+        EntityManager em = emf.createEntityManager();
+
+        TypedQuery<Player> query = null;
+        if (sign.equals("under")){
+            query = em.createQuery("SELECT distinct p FROM Player p " +
+                    "JOIN p.gender g JOIN p.times t JOIN t.contest c " +
+                    "WHERE p.age < :age AND YEAR(c.date) = :year AND t.time != 0", Player.class);
+        }else if (sign.equals("above")){
+            query = em.createQuery("SELECT distinct p FROM Player p " +
+                    "JOIN p.gender g JOIN p.times t JOIN t.contest c " +
+                    "WHERE p.age > :age AND YEAR(c.date) = :year AND t.time != 0", Player.class);
+        }
+        em.getTransaction().begin();
+        query
+                .setParameter("age", bestAge.getAge())
+                .setParameter("year", bestAge.getYear())
+                .setMaxResults(bestAge.getLimit());
+
+        return getResponse(emf, em, query);
+    }
+
+
+    private Response getResponse(EntityManagerFactory emf, EntityManager em, TypedQuery<Player> query) throws JsonProcessingException {
         List<Player> best = query.getResultList();
         em.getTransaction().commit();
         em.close();
@@ -144,6 +175,4 @@ public class PlayerController {
         String serialized = mapper.writeValueAsString(best);
         return Response.ok().entity(serialized).build();
     }
-
-
 }
