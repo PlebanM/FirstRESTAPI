@@ -19,6 +19,7 @@ import java.util.List;
 @Path("/players")
 public class PlayerController {
 
+
     @GET
     @Path("/get/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -122,7 +123,7 @@ public class PlayerController {
 
 
     @GET
-    @Path("/get/best/{sign}")
+    @Path("/get/best/age/{sign}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBestAge(BestAge bestAge, @PathParam("sign") String sign) throws JsonProcessingException {
