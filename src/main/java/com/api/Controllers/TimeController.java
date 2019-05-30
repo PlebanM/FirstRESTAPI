@@ -3,6 +3,7 @@ package com.api.Controllers;
 import com.api.Models.Contest;
 import com.api.Models.Player;
 import com.api.Models.Time;
+import com.api.Models.TimeObject;
 import com.api.Serialization.AllFieldsFromTimeSerializer;
 import com.api.Serialization.TimeSerialization;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -85,24 +86,29 @@ public class TimeController {
 
         return Response.ok(serialized).build();
     }
+
+
     @POST
     @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addUserToContest(Time time){
+    public Response addUserToContest(TimeObject time){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("sts-timing");
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(time);
+
+        int isAdd = em.createNativeQuery("INSERT INTO time (time, contest_id, player_id) VALUES (?,?,?)")
+                .setParameter(1, time.getTime())
+                .setParameter(2, time.getIdContest())
+                .setParameter(3, time.getIdPlayer()).executeUpdate();
+
         em.getTransaction().commit();
         em.close();
         emf.close();
 
-        String response = "{\"id\":" + time.getId() + "}";
+        String response = "{addTime:" + isAdd + "}";
 
         return Response.ok().entity(response).build();
-
-
 
     }
 }

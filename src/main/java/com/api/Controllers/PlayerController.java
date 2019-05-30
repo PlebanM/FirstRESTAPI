@@ -83,7 +83,7 @@ public class PlayerController {
         em.close();
         emf.close();
         System.out.println(player.getId());
-        String response = "{\"id\":" + player.getId() + "}";
+        String response = "{id:" + player.getId() + "}";
 
         return Response.ok().entity(response).build();
     }
@@ -110,7 +110,7 @@ public class PlayerController {
         query.setParameter("id", id);
 
         int result = query.executeUpdate();
-        String response = "{\"rows_updated\":" + result + "}";
+        String response = "{rows_updated:" + result + "}";
         em.getTransaction().commit();
         return Response.ok().entity(response).build();
 
