@@ -23,7 +23,7 @@ import java.util.List;
 public class ContestController {
 
     @GET
-    @Path("/get")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContests() throws JsonProcessingException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -40,7 +40,7 @@ public class ContestController {
     }
 
     @GET
-    @Path("/get/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContest(@PathParam("id") long id) throws JsonProcessingException {
         EntityManager em = Connector.getInstance().startTransaction();

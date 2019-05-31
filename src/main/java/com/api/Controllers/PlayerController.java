@@ -20,7 +20,7 @@ import java.util.List;
 public class PlayerController {
 
     @GET
-    @Path("/get/")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response user() throws IOException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -39,7 +39,7 @@ public class PlayerController {
     }
 
     @GET
-    @Path("/get/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response userId(@PathParam("id") Long id) throws JsonProcessingException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -60,7 +60,7 @@ public class PlayerController {
     }
 
     @POST
-    @Path("/new")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNewUser(Player player) {
@@ -79,7 +79,7 @@ public class PlayerController {
     }
 
     @PUT
-    @Path("/update/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateUser(Player player, @PathParam("id") Long id) {
@@ -105,7 +105,7 @@ public class PlayerController {
     }
 
     @GET
-    @Path("/get/best/")
+    @Path("/best/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBestInGender(BestGenderData bestGenderData) throws JsonProcessingException {
@@ -122,7 +122,7 @@ public class PlayerController {
 
 
     @GET
-    @Path("/get/best/{sign}")
+    @Path("/best/{sign}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBestAge(BestAge bestAge, @PathParam("sign") String sign) throws JsonProcessingException {

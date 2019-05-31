@@ -25,7 +25,7 @@ public class TimeController {
 
 
     @GET
-    @Path("/get/")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response user() throws IOException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -45,7 +45,7 @@ public class TimeController {
     }
 
     @GET
-    @Path("/get/user/{id}")
+    @Path("/user/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response userId(Player player, @PathParam("id") Long id) throws JsonProcessingException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -66,7 +66,7 @@ public class TimeController {
     }
 
     @GET
-    @Path("/get/contest/{id}")
+    @Path("/contest/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response userId(Contest contest, @PathParam("id") Long id) throws JsonProcessingException {
         EntityManager em = Connector.getInstance().startTransaction();
@@ -87,7 +87,7 @@ public class TimeController {
 
 
     @POST
-    @Path("/new")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addUserToContest(TimeObject time) {
