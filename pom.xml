@@ -20,7 +20,7 @@
 
 
     <version.eclipselink>2.6.2</version.eclipselink>
-    <version.postgres>42.1.1</version.postgres>
+    <version.postgres>42.3.3</version.postgres>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
